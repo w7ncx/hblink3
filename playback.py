@@ -132,11 +132,17 @@ class playback(HBSYSTEM):
                 sleep(2)
                 logger.info('(%s) *START  PLAYBACK* STREAM ID: %s SUB: %s (%s) REPEATER: %s (%s) TGID %s (%s), TS %s, Duration: %s', \
                                   self._system, int_id(_stream_id), get_alias(_rf_src, subscriber_ids), int_id(_rf_src), get_alias(_peer_id, peer_ids), int_id(_peer_id), get_alias(_dst_id, talkgroup_ids), int_id(_dst_id), _slot, call_duration)
+                if (int_id(_dst_id) == 9996):
+                    fout = open('/home/mmdvm/' + str(int_id(_stream_id)) + '.ambe','w+b')
                 for i in self.CALL_DATA:
+                    if (int_id(_dst_id) == 9996):
+                        fout.write(i)
 #                   self.send_system(i)
                     self.send_system( i[:5] + bytes_3( int_id(_peer_id) ) + i[8:] )
                     #print(i)
                     sleep(0.06)
+                if (int_id(_dst_id) == 9996):
+                    fout.close()
                 self.CALL_DATA = []
                 logger.info('(%s) *END    PLAYBACK* STREAM ID: %s', self._system, int_id(_stream_id))
 
